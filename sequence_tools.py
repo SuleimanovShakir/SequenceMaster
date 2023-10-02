@@ -1,4 +1,6 @@
-from source import fastq_read as fr
+import source.fastq_read as fr
+import source.protein_tools as pt
+import source.nucleic_acids_tools as nat
 
 
 # Function for filtering FASTQ file. 
@@ -18,7 +20,7 @@ def fastq_filter(seqs: dict, gc_bound: tuple = (0, 100), length_bound: tuple = (
 
 
 # Function for working with protein sequences
-def main(*args: str):
+def protein_tools(*args: str):
     """
     Main function to perform various actions on protein sequences.
 
@@ -72,3 +74,28 @@ def main(*args: str):
     result = action_list[action](*args[:-1])
 
     return result
+
+
+# Function for working with DNA/RNA sequences
+def nucl_acid_tools(*arguments):
+    list_of_seq = arguments[:-1]
+    action = arguments[-1]
+    output_seq_list = []
+    FUNC_DICT = { # Function dictionary
+        'transcribe': nat.transcribe,
+        'reverse': nat.reverse,
+        'complement': nat.complement,
+        'reverse_complement': nat.reverse_complement,
+        'make_binary': nat.make_binary
+        }
+
+    if action in FUNC_DICT:
+        for seq in list_of_seq:
+            function = FUNC_DICT[action]
+            output_seq_list.append(function(seq))
+        if len(output_seq_list) == 1:
+            return output_seq_list[0]
+        else:
+            return output_seq_list
+    else:
+        raise ValueError("Function is not found")

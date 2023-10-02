@@ -28,3 +28,20 @@ def seq_length(seq: str) -> float:
         length of the sequence in number of nucleotides
     """
     return len(seq)
+
+
+# Function to calculate quality score (Q-score)
+def quality_score(quality_seq: str) -> float:
+    """
+    This function calculates the Q-score for the sequence.
+
+    Arguments:
+        quality_seq = sequence with the data of Q-score for each nucleotide.
+
+    Output:
+        Q-score.
+    """
+    score = 0
+    for symbol in quality_seq:
+        score += ord(symbol) - 33
+    return score/len(quality_seq)

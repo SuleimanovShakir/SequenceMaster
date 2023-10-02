@@ -1,3 +1,5 @@
+# Additional script for working with fastq files
+
 # Function to count GC content
 def gc_content(seq: str) -> float:
     """

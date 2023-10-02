@@ -1,11 +1,17 @@
-from source import fastq_red as fr
+from source import fastq_read as fr
 
-# Поработать с условиями в 56 строке - мне кажется, что можно как-то упростить
-# Поставить значения по умолчанию - обязательно нужно сделать - непонятно как они стакаются с аннотациями
-def fastq_filter(seqs: dict, gc_bound: tuple, length_bound: tuple, quality_threshold: float) -> dict:
+
+# Function for filtering FASTQ file. 
+def fastq_filter(seqs: dict, gc_bound: tuple = (0, 100), length_bound: tuple = (0, 2**32), quality_threshold: float = 0) -> dict:
     dict = seqs.copy()
     for value in seqs:
         fastq = seqs[value][0]
-        if (fr.gc_content(fastq) < gc_bound[0] or fr.gc_content(fastq) > gc_bound[1]) or (fr.seq_length(fastq) < length_bound[0] or fr.seq_length(fastq) > length_bound[1]) or (fr.quality_score(fastq) < quality_threshold):
+        if type(gc_bound) == int or type(gc_bound) == float:
+            gc_check = fr.gc_content(fastq) >= gc_bound
+        else: 
+            gc_check = fr.gc_content(fastq) < gc_bound[0] or fr.gc_content(fastq) > gc_bound[1]
+        len_check = fr.seq_length(fastq) < length_bound[0] or fr.seq_length(fastq) > length_bound[1]
+        quality_check = fr.quality_score(fastq) < quality_threshold
+        if gc_check or len_check or quality_check:
             del dict[value]      
     return dict

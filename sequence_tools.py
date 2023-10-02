@@ -47,13 +47,13 @@ def protein_tools(*args: str):
 
     action = args[-1]
     action_list = {
-        "get_pI": get_pI,
-        "needleman_wunsch": needleman_wunsch,
-        "build_scoring_matrix": build_scoring_matrix,
-        "calculate_aa_freq": calculate_aa_freq,
-        "translate_protein_rna": translate_protein_rna,
-        "convert_to_3L_code": convert_to_3L_code,
-        "protein_mass": protein_mass,
+        "get_pI": pt.get_pI,
+        "needleman_wunsch": pt.needleman_wunsch,
+        "build_scoring_matrix": pt.build_scoring_matrix,
+        "calculate_aa_freq": pt.calculate_aa_freq,
+        "translate_protein_rna": pt.translate_protein_rna,
+        "convert_to_3L_code": pt.convert_to_3L_code,
+        "protein_mass": pt.protein_mass,
     }
 
     if action not in action_list:
@@ -68,7 +68,7 @@ def protein_tools(*args: str):
         raise ValueError("Error in number of sequences")
 
     for sequence in args[:-1]:
-        if not all([letter.capitalize() in AMINO_LETTERS for letter in sequence]):
+        if not all([letter.capitalize() in pt.AMINO_LETTERS for letter in sequence]):
             raise ValueError(f"The sequence is not protein sequence: {sequence}")
 
     result = action_list[action](*args[:-1])

@@ -1,5 +1,5 @@
 # Dictionary: keys - single-letter amino acid designations; values - list of RNA codons
-aa_codon_dict = {
+AA_CODON_DICT = {
     "G": ["GGA", "GGU", "GGC", "GGG"],
     "R": ["AGA", "AGG", "CGA", "CGC", "CGG", "CGU"],
     "S": ["AGC", "AGU", "UCA", "UCC", "UCG", "UCU"],
@@ -24,7 +24,7 @@ aa_codon_dict = {
 
 
 # Dictionary: keys - single-letter amino acid designations; values - names of amino acids
-aa_one_to_three_letter = {
+AA_ONE_TO_THREE_LETTER = {
     "A": "Ala-",
     "C": "Cys-",
     "D": "Asp-",
@@ -49,7 +49,7 @@ aa_one_to_three_letter = {
 
 
 # aminoacids mass dictionary
-aa_monoistopic_mass_dict = {
+AA_MONOISOTOPIC_MASS_DICT = {
     "A": 71.03711,
     "C": 103.00919,
     "D": 115.02694,
@@ -73,7 +73,7 @@ aa_monoistopic_mass_dict = {
 }
 
 # aminoacids pI (isoelectric point) values dictionary
-aa_pI = {
+AA_pI = {
     "A": 6.0,  # Alanine
     "R": 10.8,  # Arginine
     "N": 5.4,  # Asparagine

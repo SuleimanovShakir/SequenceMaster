@@ -1,5 +1,5 @@
 # importing necessary modules
-import protein_dict as pd
+import source.protein_dict as pd
 from random import choice
 
 
@@ -39,7 +39,7 @@ def is_protein(seq: str) -> bool:
         returns True or False
     """
     unique_chars = set(seq)
-    aminoacids = set(pd.aa_monoistopic_mass_dict.keys())
+    aminoacids = set(pd.AA_MONOISOTOPIC_MASS_DICT.keys())
     return bool(unique_chars <= aminoacids)
 
 
@@ -63,7 +63,7 @@ def get_pI(
 
     if pI_values is None:
         # Default pKa_values if not provided
-        pI_values = pd.aa_pI
+        pI_values = pd.AA_pI
 
     aminoacid_pIs = []
 
@@ -256,7 +256,7 @@ def convert_to_3L_code(seq: str) -> str:
     """
     seq = seq.upper()
     if is_protein(seq) is True:
-        sequence = "".join(pd.aa_one_to_three_letter.get(aa) for aa in seq)
+        sequence = "".join(pd.AA_ONE_TO_THREE_LETTER.get(aa) for aa in seq)
         return sequence[:-1]
     else:
         raise ValueError("Sequence is not a protein, input should be protein")
@@ -275,7 +275,7 @@ def protein_mass(seq: str) -> float:
     """
     seq = seq.upper()
     if is_protein(seq) is True:
-        mass = sum(pd.aa_monoistopic_mass_dict.get(aa) for aa in seq)
+        mass = sum(pd.AA_MONOISOTOPIC_MASS_DICT.get(aa) for aa in seq)
         return mass
     else:
         raise ValueError("Sequence is not a protein, input should be protein")
@@ -298,7 +298,7 @@ def translate_protein_rna(seq: str) -> str:
     if is_protein(seq) is True:
         rna = ""
         for aa in seq:
-            codon = choice(pd.aa_codon_dict.get(aa))
+            codon = choice(pd.AA_CODON_DICT.get(aa))
             rna += codon
         return rna
     else:

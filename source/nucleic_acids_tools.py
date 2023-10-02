@@ -1,4 +1,4 @@
-import dictionaries as dict
+import source.nucleic_acids_dict as dict
 
 
 # Check if seq is DNA

@@ -1,38 +1,48 @@
 import source.fastq_read as fr
 import source.protein_tools as pt
 import source.nucleic_acids_tools as nat
+from typing import Union
 
 
 # Function for filtering FASTQ file
-def fastq_filter(seqs: dict, gc_bound: tuple = (0, 100), length_bound: tuple = (0, 2**32), quality_threshold: int = 0) -> dict:
+def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
+                 length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict:
     """
     This function work with FASTQ files and filters them by
     GC content, length and Q-score.
 
     Arguments:
-    - seqs: dictionary consisting of fastq sequences. The structure is as follows.
+    - seqs (dict): dictionary consisting of fastq sequences. The structure is as follows.
     Key: string, sequence name. Value: tuple of two strings (sequence and quality).
-    - gc_bound: tuple of required range of GC percentage (inclusive).
+    - gc_bound (tuple, int, float): tuple of required range of GC percentage (inclusive).
     num of float if only higher border of the range is neede (exclusive).
-    - length_bound: tuple of required range of sequence length (inclusive).
-    - quality_threshold: int of lowest level of Q-score (inclusive).
+    - length_bound (tuple): tuple of required range of sequence length (inclusive).
+    - quality_threshold (int): int of lowest level of Q-score (inclusive).
 
     Output:
         - dictionary of those samples, which match all conditions.
     """
-    result_dict = seqs.copy()
-    for value in seqs:
-        fastq = seqs[value][0]
-        if isinstance(gc_bound, int) or isinstance(gc_bound, float):
-            gc_check = fr.gc_content(fastq) >= gc_bound
-        else:
-            gc_check = fr.gc_content(fastq) < gc_bound[0] or fr.gc_content(fastq) > gc_bound[1]
-        len_check = fr.seq_length(fastq) < length_bound[0] or fr.seq_length(fastq) > length_bound[1]
-        quality_check = fr.quality_score(fastq) < quality_threshold
-        if gc_check or len_check or quality_check:
-            del result_dict[value]      
-    return result_dict
-
+    if not len(seqs) >= 0:
+        raise ValueError('There are no fastq sequences')
+    seqs_type = isinstance(seqs, dict)
+    gc_bound_type = isinstance(gc_bound, (tuple, int, float))
+    length_bound_type = isinstance(length_bound, tuple)
+    quality_thr_type = isinstance(quality_threshold, (int, float))
+    if seqs_type and gc_bound_type and length_bound_type and quality_thr_type:
+        result_dict = seqs.copy()
+        for value in seqs:
+            fastq = seqs[value][0]
+            if isinstance(gc_bound, int) or isinstance(gc_bound, float):
+                gc_check = fr.gc_content(fastq) >= gc_bound
+            else:
+                gc_check = fr.gc_content(fastq) < gc_bound[0] or fr.gc_content(fastq) > gc_bound[1]
+            len_check = fr.seq_length(fastq) < length_bound[0] or fr.seq_length(fastq) > length_bound[1]
+            quality_check = fr.quality_score(fastq) < quality_threshold
+            if gc_check or len_check or quality_check:
+                del result_dict[value]
+        return result_dict
+    else:
+        raise ValueError('Your arguments are nor suitable!')
 
 # Function for working with protein sequences
 def protein_tools(*arguments: str):
@@ -56,7 +66,7 @@ def protein_tools(*arguments: str):
     - "build_scoring_matrix": Build a scoring matrix for amino acid pairs.
     - "calculate_aa_freq": Calculate the frequency of each amino acid in a protein sequence.
     - "translate_protein_rna": Translate amino acid sequence to RNA, using random codons for each amino acid.
-    - "convert_to_3L_code": Convert one-letter amino acid sequence to three-letter coding.
+    - "three_letter_code": Convert one-letter amino acid sequence to three-letter coding.
     - "protein_mass": Calculate the molecular weight of the protein sequence.
     """
 
@@ -67,7 +77,7 @@ def protein_tools(*arguments: str):
         "build_scoring_matrix": pt.build_scoring_matrix,
         "calculate_aa_freq": pt.calculate_aa_freq,
         "translate_protein_rna": pt.translate_protein_rna,
-        "convert_to_3L_code": pt.convert_to_3L_code,
+        "convert_to_3L_code": pt.three_letter_code,
         "protein_mass": pt.protein_mass,
     }
 
@@ -104,7 +114,7 @@ def nucl_acid_tools(*arguments: str):
     - The result of the specified action on the input nucleic acid sequences.
 
     Raises:
-    - ValueError: If the specified action is not supported or 
+    - ValueError: If the specified action is not supported or
     if there is an error in the number of sequences.
     Also raised if the input sequences are not valid DNA or RNA sequences.
     
@@ -136,4 +146,4 @@ def nucl_acid_tools(*arguments: str):
         else:
             return output_seq_list
     else:
-        raise ValueError("Function is not found")
+        raise ValueError(f"No such action: {action}")

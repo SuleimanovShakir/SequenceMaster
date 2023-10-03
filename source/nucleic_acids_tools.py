@@ -70,7 +70,7 @@ def reverse(seq: str) -> str:
 # Function for reverse seq
 def complement(seq: str) -> str:
     """
-    This function reverses only DNA sequences.
+    This function makes the complement sequence. Takes only DNA sequences.
 
     Arguments:
     - seq (str): DNA sequence.

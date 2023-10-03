@@ -40,7 +40,7 @@ def is_protein(seq: str) -> bool:
     """
     unique_chars = set(seq)
     aminoacids = set(pd.AA_MONOISOTOPIC_MASS_DICT.keys())
-    return bool(unique_chars <= aminoacids)
+    return unique_chars <= aminoacids
 
 
 # Function to get pI for each aa
@@ -244,7 +244,7 @@ def calculate_aa_freq(sequences: str) -> dict:
 
 
 # Function to convert one-letter protein sequence to three-letter protein sequence
-def convert_to_3L_code(seq: str) -> str:
+def three_letter_code(seq: str) -> str:
     """
     This function takes one letter aminoacids sequence and convert's it to three leter coding
 
@@ -255,7 +255,7 @@ def convert_to_3L_code(seq: str) -> str:
         same sequence but in three-letter coding
     """
     seq = seq.upper()
-    if is_protein(seq) is True:
+    if is_protein(seq):
         sequence = "".join(pd.AA_ONE_TO_THREE_LETTER.get(aa) for aa in seq)
         return sequence[:-1]
     else:
@@ -274,7 +274,7 @@ def protein_mass(seq: str) -> float:
         returns molecular weight
     """
     seq = seq.upper()
-    if is_protein(seq) is True:
+    if is_protein(seq):
         mass = sum(pd.AA_MONOISOTOPIC_MASS_DICT.get(aa) for aa in seq)
         return mass
     else:
@@ -295,7 +295,7 @@ def translate_protein_rna(seq: str) -> str:
         returns sequence of aminoacids
     """
     seq = seq.upper()
-    if is_protein(seq) is True:
+    if is_protein(seq):
         rna = ""
         for aa in seq:
             codon = choice(pd.AA_CODON_DICT.get(aa))

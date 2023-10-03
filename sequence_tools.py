@@ -1,7 +1,8 @@
+# Importing modules
+from typing import Union
 import source.fastq_read as fr
 import source.protein_tools as pt
 import source.nucleic_acids_tools as nat
-from typing import Union
 
 
 # Function for filtering FASTQ file
@@ -44,6 +45,7 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
     else:
         raise ValueError('Your arguments are nor suitable!')
 
+
 # Function for working with protein sequences
 def protein_tools(*arguments: str):
     """
@@ -77,7 +79,7 @@ def protein_tools(*arguments: str):
         "build_scoring_matrix": pt.build_scoring_matrix,
         "calculate_aa_freq": pt.calculate_aa_freq,
         "translate_protein_rna": pt.translate_protein_rna,
-        "convert_to_3L_code": pt.three_letter_code,
+        "three_letter_code": pt.three_letter_code,
         "protein_mass": pt.protein_mass,
     }
 

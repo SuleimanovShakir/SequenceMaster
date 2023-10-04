@@ -15,8 +15,8 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
     Arguments:
     - seqs (dict): dictionary consisting of fastq sequences. The structure is as follows.
     Key: string, sequence name. Value: tuple of two strings (sequence and quality).
-    - gc_bound (tuple, int, float): tuple of required range of GC percentage (inclusive).
-    num of float if only higher border of the range is neede (exclusive).
+    - gc_bound (tuple, int, float): tuple of required range of GC percentage (inclusive),
+    num or float if only higher border of the range is needed (exclusive).
     - length_bound (tuple): tuple of required range of sequence length (inclusive).
     - quality_threshold (int): int of lowest level of Q-score (inclusive).
 
@@ -47,7 +47,7 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
 
 
 # Function for working with protein sequences
-def protein_tools(*arguments: str):
+def protein_tools(*sequences: str, action: str):
     """
     Main function to perform various actions on protein sequences.
 
@@ -70,10 +70,7 @@ def protein_tools(*arguments: str):
     - "protein_mass": Calculate the molecular weight of the protein sequence.
     """
 
-    sequences = arguments[:-1]
-    action = arguments[-1]
     output_sequence = []
-    action = arguments[-1]
     ACTION_LIST = {
         "get_pI": pt.get_pI,
         "calculate_aa_freq": pt.calculate_aa_freq,
@@ -95,7 +92,7 @@ def protein_tools(*arguments: str):
 
 
 # Function for working with DNA/RNA sequences
-def nucl_acid_tools(*arguments: str):
+def nucl_acid_tools(*sequences: str, action: str):
     """
     This function works with DNA or RNA sequences
 
@@ -119,8 +116,6 @@ def nucl_acid_tools(*arguments: str):
     - "make_binary": Recodes DNA or RNA sequence in binary code.
     First number is always reffered to nucleic acid type: 0 - DNA, 1 - RNA.
     """
-    list_of_seq = arguments[:-1]
-    action = arguments[-1]
     output_seq_list = []
     FUNC_DICT = { # Function dictionary
         'transcribe': nat.transcribe,
@@ -131,7 +126,7 @@ def nucl_acid_tools(*arguments: str):
         }
 
     if action in FUNC_DICT:
-        for seq in list_of_seq:
+        for seq in sequences:
             function = FUNC_DICT[action]
             output_seq_list.append(function(seq))
         if len(output_seq_list) == 1:

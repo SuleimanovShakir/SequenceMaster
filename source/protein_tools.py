@@ -39,7 +39,7 @@ def is_protein(seq: str) -> bool:
         returns True or False
     """
     unique_chars = set(seq)
-    aminoacids = set(pd.AA_MONOISOTOPIC_MASS_DICT.keys())
+    aminoacids = set(AMINO_LETTERS)
     return unique_chars <= aminoacids
 
 

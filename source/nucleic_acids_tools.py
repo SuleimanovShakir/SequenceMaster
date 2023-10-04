@@ -82,7 +82,7 @@ def complement(seq: str) -> str:
         raise ValueError("Sequence is not a DNA, input should be DNA")
     else:
         return ''.join([dict.COMPLMENTARITY_DICT[i] for i in seq])
-         
+
 
 # Function for make reverse and complement seq
 def reverse_complement(seq: str) -> str:

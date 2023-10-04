@@ -1,4 +1,4 @@
-# **SequenceMaster**
+# **SequenceMaster** <a href=""><img src="img/Logo.png" align="right" width="150" >
 
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids, proteins such as for work with FASTQ files_
 
@@ -110,6 +110,6 @@ print(fastq_filter(sequences_dict, (40,60), (0, 200), 25)) -> filtered_sequences
 ```
 
 ## Contacts 
-Shakir Suleimanov,
+Shakir Suleimanov,\
 Please, do not hesitate to contact me via [Git-Hub](https://github.com/SuleimanovShakir) or [e-mail](suleymanovef@gmail.com).
 

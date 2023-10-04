@@ -1,5 +1,7 @@
 # **SequenceMaster** <a href=""><img src="img/Logo.png" align="right" width="150" >
 
+**README должен быть кратким, как команда, как выстрел, иначе времени на отдых не останется!**
+
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids, proteins such as for work with FASTQ files_
 
 <div style='justify-content: center'>
@@ -77,7 +79,7 @@ fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
                  length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict
 ```
 List of arguments:
-- Firstly, you have to enter dictionary  consisting of fastq sequences. The structure is as follows.
+- seqs: you have to enter dictionary consisting of fastq sequences. The structure is as follows.
 Key: string, sequence name. Value: tuple of two strings (sequence and quality).
 - gc_bound: tuple of required range of GC percentage (inclusive), num or float if only higher border of the range is needed (exclusive). (0,100) is a defaul range of GC content.
 - length_bound: tuple of required range of sequence length (inclusive). (0,2**32) is a defaul range of length.

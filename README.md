@@ -1,6 +1,8 @@
 # **SequenceMaster**
+
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids, proteins such as for work with FASTQ files_
 
+[image](https://drive.google.com/file/d/1B78td-071CHh5uexSoz3V8fXcYr_O40z/view?usp=sharing)
 
 ## Key Features
 
@@ -81,9 +83,6 @@ Key: string, sequence name. Value: tuple of two strings (sequence and quality).
 
 There is only one action - filter input dictionary by this parameters and give but dictionary with those entries that meet the conditions.
 
-## Contacts 
-Please, do not hesitate to contact me via [Git-Hub](https://github.com/SuleimanovShakir), [e-mail](suleymanovef@gmail.com) or Telegram (@Shake_Shack_99).
-
 ## Examples
 
 ### Nucleic acids tools
@@ -108,12 +107,7 @@ print(protein_tools('KLMN', action='protein_mass')) -> 486.26244
 print(fastq_filter(sequences_dict, (40,60), (0, 200), 25)) -> filtered_sequences_dict
 ```
 
+## Contacts 
+Shakir Suleimanov,
+Please, do not hesitate to contact me via [Git-Hub](https://github.com/SuleimanovShakir) or [e-mail](suleymanovef@gmail.com).
 
-
-
-
-fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
-                 length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict:
-
-
-```

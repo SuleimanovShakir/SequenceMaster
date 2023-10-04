@@ -64,43 +64,34 @@ def protein_tools(*arguments: str):
 
     Supported Actions:
     - "get_pI": Calculate isoelectric points for each amino acid in the sequence.
-    - "needleman_wunsch": Perform global alignment of two sequences using the Needleman-Wunsch algorithm.
-    - "build_scoring_matrix": Build a scoring matrix for amino acid pairs.
     - "calculate_aa_freq": Calculate the frequency of each amino acid in a protein sequence.
     - "translate_protein_rna": Translate amino acid sequence to RNA, using random codons for each amino acid.
     - "three_letter_code": Convert one-letter amino acid sequence to three-letter coding.
     - "protein_mass": Calculate the molecular weight of the protein sequence.
     """
 
+    sequences = arguments[:-1]
     action = arguments[-1]
-    action_list = {
+    output_sequence = []
+    action = arguments[-1]
+    ACTION_LIST = {
         "get_pI": pt.get_pI,
-        "needleman_wunsch": pt.needleman_wunsch,
-        "build_scoring_matrix": pt.build_scoring_matrix,
         "calculate_aa_freq": pt.calculate_aa_freq,
         "translate_protein_rna": pt.translate_protein_rna,
         "three_letter_code": pt.three_letter_code,
         "protein_mass": pt.protein_mass,
     }
 
-    if action not in action_list:
+    if action in ACTION_LIST:
+        for seq in sequences:
+            function = ACTION_LIST[action]
+            output_sequence.append(function(seq))
+        if len(output_sequence) == 1:
+            return output_sequence[0]
+        else:
+            return output_sequence
+    else:
         raise ValueError(f"No such action: {action}")
-
-    if not (
-        action == "needleman_wunsch"
-        and len(arguments) == 3
-        or action != "needleman_wunsch"
-        and len(arguments) == 2
-    ):
-        raise ValueError("Error in number of sequences")
-
-    for sequence in arguments[:-1]:
-        if not all([letter.capitalize() in pt.AMINO_LETTERS for letter in sequence]):
-            raise ValueError(f"The sequence is not protein sequence: {sequence}")
-
-    result = action_list[action](*arguments[:-1])
-
-    return result
 
 
 # Function for working with DNA/RNA sequences

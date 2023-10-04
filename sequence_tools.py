@@ -7,7 +7,8 @@ import source.nucleic_acids_tools as nat
 
 # Function for filtering FASTQ file
 def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
-                 length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict:
+                 length_bound: Union[tuple, int, float] = (0, 2**32), 
+                 quality_threshold: Union[int, float] = 0) -> dict:
     """
     This function work with FASTQ files and filters them by
     GC content, length and Q-score.
@@ -17,7 +18,8 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
     Key: string, sequence name. Value: tuple of two strings (sequence and quality).
     - gc_bound (tuple, int, float): tuple of required range of GC percentage (inclusive),
     num or float if only higher border of the range is needed (exclusive).
-    - length_bound (tuple): tuple of required range of sequence length (inclusive).
+    - length_bound (tuple, int, float): tuple of required range of sequences length (inclusive),
+    num or float if only higher border of the range is needed (exclusive).
     - quality_threshold (int): int of lowest level of Q-score (inclusive).
 
     Output:
@@ -27,7 +29,7 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
         raise ValueError('There are no fastq sequences')
     seqs_type = isinstance(seqs, dict)
     gc_bound_type = isinstance(gc_bound, (tuple, int, float))
-    length_bound_type = isinstance(length_bound, tuple)
+    length_bound_type = isinstance(length_bound, (tuple, int, float))
     quality_thr_type = isinstance(quality_threshold, (int, float))
     if seqs_type and gc_bound_type and length_bound_type and quality_thr_type:
         result_dict = seqs.copy()
@@ -37,7 +39,10 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
                 gc_check = fr.gc_content(fastq) >= gc_bound
             else:
                 gc_check = fr.gc_content(fastq) < gc_bound[0] or fr.gc_content(fastq) > gc_bound[1]
-            len_check = fr.seq_length(fastq) < length_bound[0] or fr.seq_length(fastq) > length_bound[1]
+            if isinstance(length_bound, int) or isinstance(length_bound, float):
+                length_bound_type = fr.gc_content(fastq) >= length_bound
+            else:
+                length_bound_type = fr.gc_content(fastq) < length_bound[0] or fr.gc_content(fastq) > length_bound[1]
             quality_check = fr.quality_score(fastq) < quality_threshold
             if gc_check or len_check or quality_check:
                 del result_dict[value]

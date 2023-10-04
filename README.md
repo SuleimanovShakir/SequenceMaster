@@ -31,7 +31,7 @@ As we live in the world of **central dogma of molecular biology**, this function
 To start working with nucleic acids, just run this command:
 
 ```{python}
-nucleic_acid_tools(*sequences, action)
+nucleic_acid_tools(*sequences: str, action: str)
 ```
 - Firstly, you have to enter your DNA or RNA sequences just as 'str' type as positional arguments
 - Last arguments is always an action that you prefer to perform to your sequences. Here is a list of possible actions
@@ -48,7 +48,7 @@ Supported Actions:
 
 To start working with proteins, just run this command:
 ```{python}
-protein_tools(*sequences, action)
+protein_tools(*sequences: str, action: str)
 ```
 
 - Firstly, you have to enter your protein sequence just as 'str' type as positional arguments. You have to use one-letter coding.
@@ -69,7 +69,8 @@ Last but not least - `fastq_filter`
 
 To start filtering your FASTQ files, just run this command:
 ```{python}
-fastq_filter(*sequences, action)
+fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
+                 length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict
 ```
 List of arguments:
 - Firstly, you have to enter dictionary  consisting of fastq sequences. The structure is as follows.
@@ -79,3 +80,40 @@ Key: string, sequence name. Value: tuple of two strings (sequence and quality).
 - quality_threshold: int of lowest level of Q-score (inclusive). 0 is a default Q-score
 
 There is only one action - filter input dictionary by this parameters and give but dictionary with those entries that meet the conditions.
+
+## Contacts 
+Please, do not hesitate to contact me via [Git-Hub](https://github.com/SuleimanovShakir), [e-mail](suleymanovef@gmail.com) or Telegram (@Shake_Shack_99).
+
+## Examples
+
+### Nucleic acids tools
+```{python}
+print(nucl_acid_tools('ATG', action='transcribe')) -> 'AUG'
+print(nucl_acid_tools('ATG', 'GAT', action='reverse')) -> ['GTA', 'TAG']
+print(nucl_acid_tools('ATG', 'tAg', 'AAA', action='complement')) -> ['TAC', 'aTc', 'TTT']
+print(nucl_acid_tools('ATG', 'tAg', 'AAA', action='reverse_complement')) -> ['CAT', 'cTa', 'TTT']
+print(nucl_acid_tools('ATG', action='make_binary')) -> '0,0,0,0,1,1,0'
+```
+
+### Proteins tools
+```{python}
+print(protein_tools('KKLMN', action='calculate_aa_freq')) -> {'K': 2, 'L': 1, 'M': 1, 'N': 1}
+print(protein_tools('KLMN','PRST', action='translate_protein_rna')) -> ['AAGCUAAUGAAC', 'CCAAGGAGCACG']
+print(protein_tools('KLMN', 'pRsT', action='three_letter_code')) -> ['Lys-Leu-Met-Asn', 'Pro-Arg-Ser-Thr']
+print(protein_tools('KLMN', action='protein_mass')) -> 486.26244
+```
+
+### FASTQ filter
+```{python}
+print(fastq_filter(sequences_dict, (40,60), (0, 200), 25)) -> filtered_sequences_dict
+```
+
+
+
+
+
+fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
+                 length_bound: tuple = (0, 2**32), quality_threshold: Union[int, float] = 0) -> dict:
+
+
+```

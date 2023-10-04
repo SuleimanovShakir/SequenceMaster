@@ -82,7 +82,7 @@ def get_pI(
         else:
             continue
 
-    return f"Sequence: {sequence}. Isoelectric point of each aminoacid: {aminoacid_pIs}"
+    return f"{aminoacid_pIs}"
 
 
 # Function to calculate frequency of unique aminoacid in the sequence

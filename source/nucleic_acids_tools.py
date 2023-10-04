@@ -61,7 +61,7 @@ def reverse(seq: str) -> str:
     Output:
     - seq (str): DNA or RNA sequence.
     """
-    if not is_dna(seq) or is_rna(seq):
+    if not (is_dna(seq) or is_rna(seq)):
         raise ValueError("Sequence is not a DNA/RNA, input should be DNA/RNA")
     else:
         return seq[::-1]
@@ -113,9 +113,10 @@ def make_binary(seq: str) -> tuple:
     Output:
     - binary consequence (str).
     """
-    if not is_dna(seq) or is_rna(seq):
+    if not (is_dna(seq) or is_rna(seq)):
         raise ValueError("Sequence is not a DNA/RNA, input should be DNA/RNA")
     else:
+        seq = seq.upper()
         binary_seq = ''.join([dict.BINARY_DICT[i] for i in seq])
         if is_dna(seq):
             result = '0,' + binary_seq[0:-1]

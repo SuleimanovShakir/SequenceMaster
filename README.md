@@ -2,7 +2,9 @@
 
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids, proteins such as for work with FASTQ files_
 
-[image](https://drive.google.com/file/d/1B78td-071CHh5uexSoz3V8fXcYr_O40z/view?usp=sharing)
+<div style='justify-content: center'>
+<img src="img/SequenceMaster.png" align='center', width="100%">
+</div>
 
 ## Key Features
 

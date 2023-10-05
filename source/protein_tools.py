@@ -2,29 +2,7 @@
 import source.protein_dict as pd
 from random import choice
 
-
-AMINO_LETTERS = [
-    "A",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "K",
-    "L",
-    "M",
-    "N",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "V",
-    "W",
-    "Y",
-]
+AMINO_LETTERS = set("AaCcDdEeFfGgHhIiKkLlMmNnPpQqRrSsTtVvWwYy")
 
 
 # Function to determine is the sequence is a protein or not
@@ -39,8 +17,7 @@ def is_protein(seq: str) -> bool:
         returns True or False
     """
     unique_chars = set(seq)
-    aminoacids = set(AMINO_LETTERS)
-    return unique_chars <= aminoacids
+    return unique_chars.issubset(AMINO_LETTERS)
 
 
 # Function to get pI for each aa
@@ -110,7 +87,7 @@ def calculate_aa_freq(sequences: str) -> dict:
     return amino_acid_frequency
 
 
-# Function to convert one-letter protein sequence to three-letter protein sequence
+# Function to convert one-letter protein sequence to three-letter protein seq
 def three_letter_code(seq: str) -> str:
     """
     This function takes one letter aminoacids sequence and convert's it to three leter coding
@@ -122,11 +99,10 @@ def three_letter_code(seq: str) -> str:
         same sequence but in three-letter coding
     """
     seq = seq.upper()
-    if is_protein(seq):
-        sequence = "".join(pd.AA_ONE_TO_THREE_LETTER.get(aa) for aa in seq)
-        return sequence[:-1]
-    else:
+    if not is_protein(seq):
         raise ValueError("Sequence is not a protein, input should be protein")
+    sequence = "-".join(pd.AA_ONE_TO_THREE_LETTER.get(aa) for aa in seq)
+    return sequence   
 
 
 # Function to calculate protein mass
@@ -141,11 +117,10 @@ def protein_mass(seq: str) -> float:
         returns molecular weight
     """
     seq = seq.upper()
-    if is_protein(seq):
-        mass = sum(pd.AA_MONOISOTOPIC_MASS_DICT.get(aa) for aa in seq)
-        return mass
-    else:
+    if not is_protein(seq):
         raise ValueError("Sequence is not a protein, input should be protein")
+    mass = sum(pd.AA_MONOISOTOPIC_MASS_DICT.get(aa) for aa in seq)
+    return mass
 
 
 # Function to translate Protein to RNA
@@ -162,11 +137,10 @@ def translate_protein_rna(seq: str) -> str:
         returns sequence of aminoacids
     """
     seq = seq.upper()
-    if is_protein(seq):
-        rna = ""
-        for aa in seq:
-            codon = choice(pd.AA_CODON_DICT.get(aa))
-            rna += codon
-        return rna
-    else:
+    if not is_protein(seq):
         raise ValueError("Sequence is not a protein, input should be a protein")
+    rna = ""
+    for aminoacid in seq:
+        codon = choice(pd.AA_CODON_DICT.get(aminoacid))
+        rna += codon
+    return rna

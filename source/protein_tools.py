@@ -1,6 +1,7 @@
 # importing necessary modules
-import source.protein_dict as pd
 from random import choice
+import source.protein_dict as pd
+
 
 AMINO_LETTERS = set("AaCcDdEeFfGgHhIiKkLlMmNnPpQqRrSsTtVvWwYy")
 

@@ -1,4 +1,6 @@
 # Dictionary: keys - single-letter amino acid designations; values - list of RNA codons
+
+
 AA_CODON_DICT = {
     "G": ["GGA", "GGU", "GGC", "GGG"],
     "R": ["AGA", "AGG", "CGA", "CGC", "CGG", "CGU"],

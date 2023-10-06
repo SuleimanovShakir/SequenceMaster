@@ -64,7 +64,7 @@ protein_tools(*sequences: str, action: str)
 Supported Actions:
 - "get_pI": Calculate isoelectric points for each amino acid in the sequence.
 - "calculate_aa_freq": Calculate the frequency of each amino acid in a protein sequence.
-- "translate_protein_rna": Translate amino acid sequence to RNA, using random codons for each amino acid.
+- "translate_protein_rna": Translate amino acid sequence to RNA, using _*random codons*_ for each amino acid.
 - "three_letter_code": Convert one-letter amino acid sequence to three-letter coding.
 - "protein_mass": Calculate the molecular weight of the protein sequence.
 ```
@@ -110,6 +110,21 @@ print(protein_tools('KLMN', action='protein_mass')) -> 486.26244
 ```{python}
 print(fastq_filter(sequences_dict, (40,60), (0, 200), 25)) -> filtered_sequences_dict
 ```
+
+## Troubleshooting
+|  Type of the problem                                             |  Probable cause
+| ------------------------------------------------------------ |--------------------
+| ValueError: No such action: {action}                         | You have entered a wrong action. Please, check function docstring
+**Working with FASTQ**
+| ValueError: There are no fastq sequences                     | Your FASTQ input is empty
+| ValueError: Your arguments are not suitable!                 | You enter wrong type of arguments. Please, check function docstring
+| TypeError: takes from 0 to 1 positional arguments but n were given  | Sequences are not collected into the list type
+**Working with protein**
+| ValueError: Sequence is not a protein, input should be protein  | You have entered a wrong sequence 
+**Working with nucleic acids**
+| ValueError: Sequence is not a DNA, input should be DNA       | You have entered a wrong sequence 
+| ValueError: Sequence is not a DNA/RNA, input should be DNA/RNA    | You have entered a wrong sequence 
+
 
 ## Contacts 
 Shakir Suleimanov,\

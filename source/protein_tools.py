@@ -103,7 +103,7 @@ def three_letter_code(seq: str) -> str:
     if not is_protein(seq):
         raise ValueError("Sequence is not a protein, input should be protein")
     sequence = "-".join(pd.AA_ONE_TO_THREE_LETTER.get(aa) for aa in seq)
-    return sequence   
+    return sequence
 
 
 # Function to calculate protein mass

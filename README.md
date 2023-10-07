@@ -111,6 +111,7 @@ print(fastq_filter(sequences_dict, (40,60), (0, 200), 25)) -> filtered_sequences
 |  Type of the problem                                             |  Probable cause
 | ------------------------------------------------------------ |--------------------
 | ValueError: No such action: {action}                         | You have entered a wrong action. Please, check function docstring
+| ValueError: Your sequence is empty                           | You have entered empty sequence. Please notice, this error occurs only when you enter 1 sequence.
 **Working with FASTQ**
 | ValueError: There are no fastq sequences                     | Your FASTQ input is empty
 | ValueError: Your arguments are not suitable!                 | You enter wrong type of arguments. Please, check function docstring

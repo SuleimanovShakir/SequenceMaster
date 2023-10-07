@@ -82,7 +82,11 @@ def protein_tools(*sequences: str, action: str):
         "three_letter_code": pt.three_letter_code,
         "protein_mass": pt.protein_mass,
     }
-
+    # check for the size of sequence if only 1 is entered
+    if len(sequences) == 1:
+        if len(sequences[0]) == 0:
+            raise ValueError("Your sequence is empty")
+    # check for actions
     if action not in ACTION_LIST:
         raise ValueError(f"No such action: {action}")
     for seq in sequences:
@@ -126,7 +130,11 @@ def nucl_acid_tools(*sequences: str, action: str):
         'reverse_complement': nat.reverse_complement,
         'make_binary': nat.make_binary
         }
-
+    # check for the size of sequence if only 1 is entered
+    if len(sequences) == 1:
+        if len(sequences[0]) == 0:
+            raise ValueError("Your sequence is empty")
+    # check for actions
     if action not in FUNC_DICT:
         raise ValueError(f"No such action: {action}")
     for seq in sequences:

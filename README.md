@@ -16,10 +16,6 @@ _A powerful and minimalistic bioinfomatical tool to work with sequences of nucle
 
 - **FASTQ File Manipulation:** Easily filter FASTQ files depending on quality, sequence length and GC content
 
-## Getting Started
-
-To get started with SequenceMaster, visit our [Documentation](https://yourdocumentationlink.com) for detailed usage instructions and examples.
-
 ## Installation
 
 To get the tool clone the git repository::

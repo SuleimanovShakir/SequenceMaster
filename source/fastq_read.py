@@ -47,3 +47,42 @@ def quality_score(quality_seq: str) -> float:
     for symbol in quality_seq:
         score += ord(symbol) - 33
     return score/len(quality_seq)
+
+
+def fastq_to_dict(input_path: str) -> dict:
+    """
+    This function converts given FASTQ file to dictionary
+    """
+    with open(input_path) as file:
+        lines = []
+        for line in file:
+            line = line.strip('\n')
+            lines.append(line)
+    output_dict = {}
+    size = len(lines)
+    fastq = lines.copy()
+    for value in range(0, size, 4):
+        id = fastq[value]
+        seq = fastq[value+1]
+        quality = fastq[value+3]
+        output_dict[id] = (seq, quality)
+    return output_dict
+
+
+def dict_to_fastq(input_dict: dict, output_path: str):
+    """
+    This function converts dictionary to FASTQ
+    """
+    final_list = []
+    for i in range(0, len(input_dict)):
+        keys = list(input_dict.keys())[i]
+        final_list.append(keys)
+        third_line = keys.replace('@', '+')
+        values = list(input_dict.values())[i]
+        final_list.append(values[0])
+        final_list.append(third_line)
+        final_list.append(values[1])
+    with open(output_path, 'w') as output_file:
+        for line in final_list:
+            output_file.write(line+'\n')
+        print('File is written. Check your file, bitch!')

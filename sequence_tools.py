@@ -1,4 +1,5 @@
 # Importing modules
+import os
 from typing import Union
 import source.fastq_read as fr
 import source.protein_tools as pt
@@ -6,17 +7,19 @@ import source.nucleic_acids_tools as nat
 
 
 # Function for filtering FASTQ file
-def fastq_filter(input_path: str = None, gc_bound: Union[tuple, int, float] = (0, 100),
+def fastq_filter(input_path: str = None, output_filename: str = None, *,
+                 gc_bound: Union[tuple, int, float] = (0, 100),
                  length_bound: Union[tuple, int, float] = (0, 2**32),
-                 quality_threshold: Union[int, float] = 0, 
-                 output_path: str = None):
+                 quality_threshold: Union[int, float] = 0):
     """
     This function work with FASTQ files and filters them by
     GC content, length and Q-score.
 
-    Arguments:
-    - seqs (dict): dictionary consisting of fastq sequences. The structure is as follows.
-    Key: string, sequence name. Value: tuple of two strings (sequence and quality).
+    Arguments (positional):
+    - input_path (str): full path to the file that you want to work with
+    - output_filename (str): enter just a name of the file, don't add extention
+
+    Arguments (keyword):
     - gc_bound (tuple, int, float): tuple of required range of GC percentage (inclusive),
     num or float if only higher border of the range is needed (exclusive).
     - length_bound (tuple, int, float): tuple of required range of sequences length (inclusive),
@@ -26,18 +29,34 @@ def fastq_filter(input_path: str = None, gc_bound: Union[tuple, int, float] = (0
     Output:
     - dictionary of those samples, which match all conditions.
     """
+    # Chech if PATH for input file is given
     if input_path is None:
         raise ValueError("You didn't enter any PATH to file")
+    # Chech if folder exist and create outout_path if not given
+    input_folder = input_path.rsplit('/', 1)[0]
+    input_name = input_path.rsplit('/', 1)[1]
+    is_exist = os.path.exists(f'{input_folder}/fastq_filtrator_resuls/')
+    if not is_exist:
+        os.makedirs(f'{input_folder}/fastq_filtrator_resuls/')
+    if output_filename is None:
+        output_path = f'{input_folder}/fastq_filtrator_resuls/{input_name}'
+    else:
+        output_path = f'{input_folder}/fastq_filtrator_resuls/{output_filename}.fasta'
+    # Create dict from FASTQ
     seqs = fr.fastq_to_dict(input_path)
+    # Check that this dict is not empty
     if len(seqs) <= 0:
         raise ValueError('There are no fastq sequences')
+    # Check if all given argumets have relevant type
     seqs_type = isinstance(seqs, dict)
     gc_bound_type = isinstance(gc_bound, (tuple, int, float))
     length_bound_type = isinstance(length_bound, (tuple, int, float))
     quality_thr_type = isinstance(quality_threshold, (int, float))
     if not (seqs_type and gc_bound_type and length_bound_type and quality_thr_type):
         raise ValueError('Your arguments are not suitable!')
+    # Create a copy of dict just to not delete arguments from main data
     result_dict = seqs.copy()
+    # Main filtering function
     for key, value in seqs.items():
         fastq = value[0]
         quality = value[1]
@@ -52,8 +71,7 @@ def fastq_filter(input_path: str = None, gc_bound: Union[tuple, int, float] = (0
         quality_check = fr.quality_score(quality) < quality_threshold
         if gc_check or len_check or quality_check:
             del result_dict[key]
-    if output_path is None:
-        output_path = input_path
+    # Write filtered dict to new file
     fr.dict_to_fastq(result_dict, output_path)
 
 
@@ -152,5 +170,4 @@ def nucl_acid_tools(*sequences: str, action: str):
     return output_seq_list
 
 FASTQ = '/Users/suleymanov-ef/Desktop/Additional education/Bioinformatics Institute/Bioinformatics/Python/HW6_Files/example_data/example_fastq.fastq'
-OUTFASTQ = '/Users/suleymanov-ef/Desktop/Additional education/Bioinformatics Institute/Bioinformatics/Python/HW6_Files/example_data/filtered_files/example_fastq.fastq'
-fastq_filter(FASTQ, (30, 60), 20, 25, OUTFASTQ)
+fastq_filter(input_path=FASTQ, length_bound=20, output_filename='file')

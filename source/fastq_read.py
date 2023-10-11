@@ -52,8 +52,14 @@ def quality_score(quality_seq: str) -> float:
 def fastq_to_dict(input_path: str) -> dict:
     """
     This function converts given FASTQ file to dictionary
+
+    Arguments:
+        input_path = PATH to your file on computer
+
+    Output:
+        dictionary containing FASTQ file as: key = ID, value = tuple(sequence, quality)
     """
-    with open(input_path) as file:
+    with open(input_path, 'r') as file:
         lines = []
         for line in file:
             line = line.strip('\n')
@@ -69,9 +75,15 @@ def fastq_to_dict(input_path: str) -> dict:
     return output_dict
 
 
-def dict_to_fastq(input_dict: dict, output_path: str):
+def dict_to_fastq(input_dict: dict, output_path: str = None):
     """
     This function converts dictionary to FASTQ
+
+    Arguments:
+        output_path = PATH to your file in which you want to save your processed file
+
+    Output:
+        dictionary containing FASTQ file as: key = ID, value = tuple(sequence, quality)
     """
     final_list = []
     for i in range(0, len(input_dict)):
@@ -85,4 +97,4 @@ def dict_to_fastq(input_dict: dict, output_path: str):
     with open(output_path, 'w') as output_file:
         for line in final_list:
             output_file.write(line+'\n')
-        print('File is written. Check your file, bitch!')
+        print('File is written!')

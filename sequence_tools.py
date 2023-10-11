@@ -6,9 +6,10 @@ import source.nucleic_acids_tools as nat
 
 
 # Function for filtering FASTQ file
-def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
+def fastq_filter(input_path: str = None, gc_bound: Union[tuple, int, float] = (0, 100),
                  length_bound: Union[tuple, int, float] = (0, 2**32),
-                 quality_threshold: Union[int, float] = 0) -> dict:
+                 quality_threshold: Union[int, float] = 0, 
+                 output_path: str = None):
     """
     This function work with FASTQ files and filters them by
     GC content, length and Q-score.
@@ -25,7 +26,10 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
     Output:
     - dictionary of those samples, which match all conditions.
     """
-    if not len(seqs) > 0:
+    if input_path is None:
+        raise ValueError("You didn't enter any PATH to file")
+    seqs = fr.fastq_to_dict(input_path)
+    if len(seqs) <= 0:
         raise ValueError('There are no fastq sequences')
     seqs_type = isinstance(seqs, dict)
     gc_bound_type = isinstance(gc_bound, (tuple, int, float))
@@ -34,8 +38,9 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
     if not (seqs_type and gc_bound_type and length_bound_type and quality_thr_type):
         raise ValueError('Your arguments are not suitable!')
     result_dict = seqs.copy()
-    for value in seqs:
-        fastq = seqs[value][0]
+    for key, value in seqs.items():
+        fastq = value[0]
+        quality = value[1]
         if isinstance(gc_bound, (int, float)):
             gc_check = fr.gc_content(fastq) >= gc_bound
         else:
@@ -44,10 +49,12 @@ def fastq_filter(seqs: dict, gc_bound: Union[tuple, int, float] = (0, 100),
             len_check = fr.seq_length(fastq) >= length_bound
         else:
             len_check = fr.seq_length(fastq) < length_bound[0] or fr.gc_content(fastq) > length_bound[1]
-        quality_check = fr.quality_score(fastq) < quality_threshold
+        quality_check = fr.quality_score(quality) < quality_threshold
         if gc_check or len_check or quality_check:
-            del result_dict[value]
-    return result_dict
+            del result_dict[key]
+    if output_path is None:
+        output_path = input_path
+    fr.dict_to_fastq(result_dict, output_path)
 
 
 # Function for working with protein sequences
@@ -143,3 +150,7 @@ def nucl_acid_tools(*sequences: str, action: str):
     if len(output_seq_list) <= 1:
         return output_seq_list[0]
     return output_seq_list
+
+FASTQ = '/Users/suleymanov-ef/Desktop/Additional education/Bioinformatics Institute/Bioinformatics/Python/HW6_Files/example_data/example_fastq.fastq'
+OUTFASTQ = '/Users/suleymanov-ef/Desktop/Additional education/Bioinformatics Institute/Bioinformatics/Python/HW6_Files/example_data/filtered_files/example_fastq.fastq'
+fastq_filter(FASTQ, (30, 60), 20, 25, OUTFASTQ)

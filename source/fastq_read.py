@@ -83,10 +83,11 @@ def dict_to_fastq(input_dict: dict, output_path: str = None):
     This function converts dictionary to FASTQ
 
     Arguments:
-        output_path = PATH to your file in which you want to save your processed file
+    - input_dict (dict): dictionary after filtering
+    - output_path (str): a PATH to output_file
 
     Output:
-        dictionary containing FASTQ file as: key = ID, value = tuple(sequence, quality)
+    - FASTQ file
     """
     final_list = []
     for i in range(0, len(input_dict)):

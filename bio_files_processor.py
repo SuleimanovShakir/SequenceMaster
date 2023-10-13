@@ -124,53 +124,57 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
             line = line.strip(' ')
             line = line.strip('\n')
             lines.append(line)
-        # Create file with all genes
-        all_genes = list(filter(lambda element: '/gene=' in element, lines))
-        # Create dictionary {key = gene, value = translation}
-        gbk_dict = {}
-        for element in lines:
-            if element.startswith('/gene='):
-                if not element.startswith(all_genes[-1]):
-                    for i in range(lines.index(element), lines.index(element)+9):
-                        if lines[i].startswith('/translation='):
-                            seq = lines[i]
-                            gbk_dict[element.strip('/')] = seq.strip('/')
-                else:
-                    for i in range(lines.index(element), lines.index(element)+9):
-                        if lines[i].startswith('/translation='):
-                            seq = lines[i]
-                            gbk_dict[element.strip('/')] = seq.strip('/')
+    # Create list for individual CDS. It will be lists
+    # of [CDS, gene, translation] in total list
+    individual_cds = []
+    for element in lines:
+        # Looking for block starting with CDS
+        if element.startswith('CDS'):
+            cds_index = lines.index(element)
+            element = element.replace('             ', ';')
+            element = element.replace('..', ',')
+            cds_gene_translation = []
+            cds_gene_translation.append(element)
+            # Specially a little bit more if '/=gene' would be further by accident
+            for i in range(cds_index, cds_index+5):
+                if lines[i].startswith('/gene='):
+                    gene = lines[i]
                     break
-    # Create final list
-    keys_gbk_dict = list(gbk_dict.keys())
-    final_list = []
-    # Iterate by each gene in gene of interest which is given by user
-    for gene in genes_of_interest:
-        gene = f'gene="{gene}"'
-        if gene in keys_gbk_dict:
-            index_gene = keys_gbk_dict.index(gene)
-            before = (index_gene - n_before) if (index_gene - n_before)>= 0 else 0
-            after = (index_gene + n_after) if (index_gene + n_after) <= len(keys_gbk_dict) else len(keys_gbk_dict)
-            list_of_int_genes = keys_gbk_dict[before: after+1]
-            # Create local list for genes around one concrete gene from the list 
-            # of gene of interest which is given by user
-            gene_seq_list = []
-            # Add pair (gene, seq) to local list of genes
-            for name in list_of_int_genes:
-                sequence = gbk_dict[name]
-                gene_seq_list.append(name)
-                gene_seq_list.append(sequence)
-        final_list.append(gene_seq_list)
+                else:
+                    gene = element
+            cds_gene_translation.append(gene)
+            # Specially a little bit more if '/=translation' would be further by accident
+            for i in range(cds_index, cds_index+12): 
+                if lines[i].startswith('/translation='):
+                    seq = lines[i]
+            cds_gene_translation.append(seq)
+            individual_cds.append(cds_gene_translation)
+    # Create output list. It will consist only from gene:translation pair
+    output_list = []
+    for cds in individual_cds:
+        for sample in genes_of_interest:
+            gene = f'/gene="{sample}"'
+            # Check if gene of interest in CDS
+            if gene == cds[1]:
+                # Define defore and after in indices
+                index_cds = individual_cds.index(cds)
+                before = (index_cds - n_before) if (index_cds - n_before)>= 0 else 0
+                after = (index_cds + n_after) if (index_cds + n_after) <= len(individual_cds) else len(individual_cds)
+                area_of_interest = individual_cds[before: after+1]
+                # Add all gene:seq pairs to output_list
+                for element in area_of_interest:
+                    gene = element[1]
+                    sequence = element[2]
+                    output_list.append(gene)
+                    output_list.append(sequence)
     # Write the final list to the FASTA file
     with open(output_path, 'w') as output_file:
-        for element in lines:
-            if element.startswith('>'):
+        for element in output_list:
+            if element.startswith('/gene='):
+                output_file.write(element.lstrip('/gene=').replace('"', '')+'\n')
+            if element.startswith('/translation='):
+                output_file.write(element.strip('/translation=').replace('"', '')+'\n')
+            if element.startswith('CDS'):
                 output_file.write(element+'\n')
-        for pairs in final_list:
-            for sample in pairs:
-                if sample.startswith('gene='):
-                    output_file.write('>'+sample+'\n')
-                if sample.startswith('translation='):
-                    sample = sample.strip('translation="')
-                    output_file.write(sample+'\n')
     print('Your file is written')
+

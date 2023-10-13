@@ -49,6 +49,7 @@ def quality_score(quality_seq: str) -> float:
     return score/len(quality_seq)
 
 
+# Function to convert FASTQ to dict
 def fastq_to_dict(input_path: str) -> dict:
     """
     This function converts given FASTQ file to dictionary
@@ -70,11 +71,13 @@ def fastq_to_dict(input_path: str) -> dict:
     for value in range(0, size, 4):
         id = fastq[value]
         seq = fastq[value+1]
+        comment = fastq[value+2]
         quality = fastq[value+3]
-        output_dict[id] = (seq, quality)
+        output_dict[id] = (seq, quality, comment)
     return output_dict
 
 
+# Function to convert dict to FASTQ
 def dict_to_fastq(input_dict: dict, output_path: str = None):
     """
     This function converts dictionary to FASTQ
@@ -92,7 +95,7 @@ def dict_to_fastq(input_dict: dict, output_path: str = None):
         third_line = keys.replace('@', '+')
         values = list(input_dict.values())[i]
         final_list.append(values[0])
-        final_list.append(third_line)
+        final_list.append(values[2]) # Because third(comment) line is the last in tuple
         final_list.append(values[1])
     with open(output_path, 'w') as output_file:
         for line in final_list:

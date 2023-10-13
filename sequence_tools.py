@@ -168,6 +168,3 @@ def nucl_acid_tools(*sequences: str, action: str):
     if len(output_seq_list) <= 1:
         return output_seq_list[0]
     return output_seq_list
-
-FASTQ = '/Users/suleymanov-ef/Desktop/Additional education/Bioinformatics Institute/Bioinformatics/Python/HW6_Files/example_data/example_fastq.fastq'
-fastq_filter(input_path=FASTQ, length_bound=20, output_filename='file')

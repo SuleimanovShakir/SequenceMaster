@@ -83,12 +83,26 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
                                    *, genes_of_interest: list,
                                    n_before: int = 1, n_after: int = 1):
     """
-    This function uses gbk database files to extract FASTA sequence of gene
-    Uses only those genes that have a name in gbk
+    This function uses gbk database files to extract FASTA sequence of proteins.
+    Uses only those genes that have a name in gbk database. User enters name of 
+    interested genes and how much genes before and after this gene of interest
+    he want to extract with proteins sequences for these genes.
+
+    Arguments (positional):
+    - input_gbk (str): full path to the file that you want to work with
+    - output_fasta (str): enter just a name of the file, don't add extention!
+
+    Arguments (keyword):
+    - genes_of_interest (list): list of gene names user is interested in
+    - n_before (int): how many of genes before particular genes you want to extract
+    - n_after (int): how many of genes after particular genes you want to extract
     """
     # Check if arguments are in rigth type
     if not (isinstance(genes_of_interest, list) and isinstance(n_before, int) and isinstance(n_after, int)):
         raise ValueError('Your arguments are not in suitable type')
+    # Check if genes list is empty
+    if len(genes_of_interest) == 0:
+        raise ValueError('You have entered an empty list of genes')
     # Chech if PATH for input file is given
     if input_gbk is None:
         raise ValueError("You didn't enter any PATH to file")

@@ -13,9 +13,9 @@ def gc_content(seq: str) -> float:
     """
     gc = 0
     for nucleotide in seq:
-        if nucleotide == 'G' or nucleotide == 'C':
+        if nucleotide in ('G', 'C'):
             gc += 1
-    return round(gc/len(seq)*100, 3)
+    return round(gc / len(seq) * 100, 3)
 
 
 # Function to calculate the length of the sequence
@@ -46,7 +46,7 @@ def quality_score(quality_seq: str) -> float:
     score = 0
     for symbol in quality_seq:
         score += ord(symbol) - 33
-    return score/len(quality_seq)
+    return score / len(quality_seq)
 
 
 # Function to convert FASTQ to dict

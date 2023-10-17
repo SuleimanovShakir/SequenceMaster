@@ -57,7 +57,7 @@ Supported Actions:
 ### Proteins. Sequence_tools.
 
 To start working with proteins, just run this command:
-```{python}
+```python
 protein_tools(*sequences: str, action: str)
 ```
 
@@ -77,7 +77,7 @@ Supported Actions:
 
 To start filtering your FASTQ files, just run this command `fastq_filter`:
 
-```{python}
+```python
 fastq_filter(input_path: str = None, output_filename: str = None, 
 gc_bound: Union[tuple, int, float] = (0, 100), length_bound: tuple = (0, 2**32), 
 quality_threshold: Union[int, float] = 0) -> None
@@ -97,7 +97,7 @@ There is only one action - filter input **FASTA** by this parameters and give ba
 
 To convert multiline FASTA to oneline format, one may run `convert_multiline_fasta_to_oneline`:
 
-```{python}
+```python
 convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = None) -> None:
 ```
 
@@ -111,7 +111,7 @@ As an output, user gets converted file in **FASTA** format, which is saved to *o
 
 To shift starting position of your FASTA sequence, user may try `change_fasta_start_pos`. This function work only with oneline FASTA:
 
-```{python}
+```python
 change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = None) -> None:
 ```
 
@@ -213,4 +213,3 @@ select_genes_from_gbk_to_fasta(INPUT_GBK, 'genes_of_interest', genes_of_interest
 ## Contacts 
 Shakir Suleimanov,\
 Please, do not hesitate to contact me via [Git-Hub](https://github.com/SuleimanovShakir) or [e-mail](suleymanovef@gmail.com).
-

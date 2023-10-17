@@ -1,5 +1,5 @@
 # Import modules
-import os
+from source.folder_parser import folder_parser
 
 
 # Function to convert multiline fatsa to oneline
@@ -18,15 +18,8 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = Non
     if input_fasta is None:
         raise ValueError("You didn't enter any PATH to file")
     # Chech if folder exist and create outout_path if not given
-    input_folder = input_fasta.rsplit('/', 1)[0]
-    input_name = input_fasta.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/one_line_results/')
-    if not is_exist:
-        os.makedirs(f'{input_folder}/one_line_results/')
-    if output_fasta is None:
-        output_path = f'{input_folder}/one_line_results/{input_name}'
-    else:
-        output_path = f'{input_folder}/one_line_results/{output_fasta}.fasta'
+    output_path = folder_parser(input_fasta, output_fasta, 'one_line_results', 'fasta')
+    # Open file for reading
     with open(input_fasta, 'r') as file:
         lines = []
         for line in file:
@@ -62,15 +55,9 @@ def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = Non
     # Chech if shift argument is numeric
     if not isinstance(shift, int):
         raise ValueError('Shift arguments has to be numeric')
-    input_folder = input_fasta.rsplit('/', 1)[0]
-    input_name = input_fasta.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/change_pos_results/')
-    if not is_exist:
-        os.makedirs(f'{input_folder}/change_pos_results/')
-    if output_fasta is None:
-        output_path = f'{input_folder}/change_pos_results/{input_name}'
-    else:
-        output_path = f'{input_folder}/change_pos_results/{output_fasta}.fasta'
+    # Chech if folder exist and create outout_path if not given
+    output_path = folder_parser(input_fasta, output_fasta, 'change_pos_results', 'fasta')
+    # Open file for reading
     with open(input_fasta, 'r') as file:
         lines = []
         for line in file:
@@ -116,15 +103,7 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
     if input_gbk is None:
         raise ValueError("You didn't enter any PATH to file")
     # Chech if folder exist and create outout_path if not given
-    input_folder = input_gbk.rsplit('/', 1)[0]
-    input_name = input_gbk.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/gbk_fasta_resuls/')
-    if not is_exist:
-        os.makedirs(f'{input_folder}/gbk_fasta_resuls/')
-    if output_fasta is None:
-        output_path = f'{input_folder}/gbk_fasta_resuls/{input_name}.fasta'
-    else:
-        output_path = f'{input_folder}/gbk_fasta_resuls/{output_fasta}.fasta'
+    output_path = folder_parser(input_gbk, output_fasta, 'gbk_fasta_results', 'fasta')
     # Reading GBK
     with open(input_gbk, 'r') as file:
         # Convert GBK to list
@@ -153,9 +132,13 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
                     gene = element
             cds_gene_translation.append(gene)
             # Specially a little bit more if '/=translation' would be further by accident
-            for i in range(cds_index, cds_index+12): 
+            for i in range(cds_index, cds_index+12):
                 if lines[i].startswith('/translation='):
-                    seq = lines[i]
+                    j = i
+                    seq = ''
+                    while not lines[j].endswith('"'):
+                        seq += lines[j]
+                        j += 1
             cds_gene_translation.append(seq)
             individual_cds.append(cds_gene_translation)
     # Create output list. It will consist only from gene:translation pair

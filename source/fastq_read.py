@@ -78,7 +78,7 @@ def fastq_to_dict(input_path: str) -> dict:
 
 
 # Function to convert dict to FASTQ
-def dict_to_fastq(input_dict: dict, output_path: str = None):
+def dict_to_fastq(input_dict: dict, output_path: str = None) -> None:
     """
     This function converts dictionary to FASTQ
 

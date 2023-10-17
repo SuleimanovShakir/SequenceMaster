@@ -3,24 +3,30 @@ import os
 
 
 # Function to convert multiline fatsa to oneline
-def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = None):
+def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = None) -> None:
     """
     This function converts multiline FASTA to oneline FASTA
 
     Arguments (positional):
     - input_path (str): full path to the file that you want to work with
     - output_filename (str): enter just a name of the file, don't add extention
+
+    Output:
+    - converted file in FASTA format
     """
+    # Chech if PATH for input file is given
+    if input_fasta is None:
+        raise ValueError("You didn't enter any PATH to file")
     # Chech if folder exist and create outout_path if not given
     input_folder = input_fasta.rsplit('/', 1)[0]
     input_name = input_fasta.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/results/')
+    is_exist = os.path.exists(f'{input_folder}/one_line_results/')
     if not is_exist:
-        os.makedirs(f'{input_folder}/results/')
+        os.makedirs(f'{input_folder}/one_line_results/')
     if output_fasta is None:
-        output_path = f'{input_folder}/results/{input_name}'
+        output_path = f'{input_folder}/one_line_results/{input_name}'
     else:
-        output_path = f'{input_folder}/results/{output_fasta}.fasta'
+        output_path = f'{input_folder}/one_line_results/{output_fasta}.fasta'
     with open(input_fasta, 'r') as file:
         lines = []
         for line in file:
@@ -40,7 +46,7 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = Non
 
 
 # Function to change starting position in fasta sequence
-def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = None):
+def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = None) -> None:
     """
     This function shifts sequence to n positions from the start. But nothing is deleted!
     Part of sequence which is now goes before shift is located in the end of the new sequence
@@ -50,17 +56,21 @@ def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = Non
     - shift (int): the number of nucleotides by which the starting position in the file must be shifted
     - output_filename (str): enter just a name of the file, don't add extention
     """
+    # Chech if PATH for input file is given
+    if input_fasta is None:
+        raise ValueError("You didn't enter any PATH to file")
+    # Chech if shift argument is numeric
     if not isinstance(shift, int):
         raise ValueError('Shift arguments has to be numeric')
     input_folder = input_fasta.rsplit('/', 1)[0]
     input_name = input_fasta.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/results/')
+    is_exist = os.path.exists(f'{input_folder}/change_pos_results/')
     if not is_exist:
-        os.makedirs(f'{input_folder}/results/')
+        os.makedirs(f'{input_folder}/change_pos_results/')
     if output_fasta is None:
-        output_path = f'{input_folder}/results/{input_name}'
+        output_path = f'{input_folder}/change_pos_results/{input_name}'
     else:
-        output_path = f'{input_folder}/results/{output_fasta}.fasta'
+        output_path = f'{input_folder}/change_pos_results/{output_fasta}.fasta'
     with open(input_fasta, 'r') as file:
         lines = []
         for line in file:
@@ -81,12 +91,11 @@ def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = Non
 # Function to read GBK file to FASTA
 def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
                                    *, genes_of_interest: list,
-                                   n_before: int = 1, n_after: int = 1):
+                                   n_before: int = 1, n_after: int = 1) -> None:
     """
     This function uses gbk database files to extract FASTA sequence of proteins.
-    Uses only those genes that have a name in gbk database. User enters name of 
-    interested genes and how much genes before and after this gene of interest
-    he want to extract with proteins sequences for these genes.
+    User enters name of interested genes and how much genes before and after this 
+    gene of interest he want to extract with proteins sequences for these genes.
 
     Arguments (positional):
     - input_gbk (str): full path to the file that you want to work with
@@ -117,7 +126,7 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
     else:
         output_path = f'{input_folder}/gbk_fasta_resuls/{output_fasta}.fasta'
     # Reading GBK
-    with open(GBK, 'r') as file:
+    with open(input_gbk, 'r') as file:
         # Convert GBK to list
         lines = []
         for line in file:

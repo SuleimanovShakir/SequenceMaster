@@ -1,6 +1,7 @@
 # Importing modules
 import os
 from typing import Union
+
 import source.fastq_read as fr
 import source.protein_tools as pt
 import source.nucleic_acids_tools as nat
@@ -10,7 +11,7 @@ import source.nucleic_acids_tools as nat
 def fastq_filter(input_path: str = None, output_filename: str = None, *,
                  gc_bound: Union[tuple, int, float] = (0, 100),
                  length_bound: Union[tuple, int, float] = (0, 2**32),
-                 quality_threshold: Union[int, float] = 0):
+                 quality_threshold: Union[int, float] = 0) -> None:
     """
     This function work with FASTQ files and filters them by
     GC content, length and Q-score.
@@ -41,7 +42,7 @@ def fastq_filter(input_path: str = None, output_filename: str = None, *,
     if output_filename is None:
         output_path = f'{input_folder}/fastq_filtrator_resuls/{input_name}'
     else:
-        output_path = f'{input_folder}/fastq_filtrator_resuls/{output_filename}.fasta'
+        output_path = f'{input_folder}/fastq_filtrator_resuls/{output_filename}.fastq'
     # Create dict from FASTQ
     seqs = fr.fastq_to_dict(input_path)
     # Check that this dict is not empty

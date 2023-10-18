@@ -22,10 +22,10 @@ name = int(input("Please, choose a right number according to your name: Anton - 
 print('\n')
 
 if name == 1:
-    print('              LOL          KEKKEKKEK       LOL            ')
-    print('              LOL          KEK   KEK       LOL            ')
-    print('              LOL          KEK   KEK       LOL            ')
-    print('              LOL          KEK   KEK       LOL            ')
+    print('                  LOL          KEKKEKKEK       LOL            ')
+    print('                 LOL          KEK   KEK       LOL            ')
+    print('                LOL          KEK   KEK       LOL            ')
+    print('               LOL          KEK   KEK       LOL            ')
     print('              LOLLOLLOL    KEKKEKKEK       LOLLOLLOL      ')
     print('\n')
 else:

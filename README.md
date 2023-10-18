@@ -1,6 +1,7 @@
 # **SequenceMaster** <a href=""><img src="img/Logo.png" align="right" width="150" >
 
 **README должен быть кратким, как команда, как выстрел, иначе времени на отдых не останется!**
+P.S. You may run _test.py_ in terminal/command line to check the code!
 
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids and proteins. Moreover, you may manipulate with your data in FASTQ, FASTA and GBK formats_
 
@@ -169,22 +170,22 @@ print(protein_tools('KLMN', action='protein_mass')) -> 486.26244
 
 ### FASTQ filter
 ```python
-fastq_filter(INPUT_FASTQ, 'filtered_fastq', gc_bound=(40,60), length_bound=(0, 200), quality_threshold=25) -> "File is written!"
+fastq_filter(INPUT_FASTQ, 'filtered_fastq', gc_bound=(40,60), length_bound=(0, 200), quality_threshold=25) -> "Filtered FASTA is written!"
 ```
 
 ### FASTA to oneline
 ```python
-convert_multiline_fasta_to_oneline(INPUT_FASTA, 'oneline_fasta') -> "File is written!"
+convert_multiline_fasta_to_oneline(INPUT_FASTA, 'oneline_fasta') -> "Multiline FASTA is converted to oneline!"
 ```
 
 ### FASTA shift start
 ```python
-change_fasta_start_pos(INPUT_ONELINE_FASTA, 3, 'shifte_fasta') -> "File is written!"
+change_fasta_start_pos(INPUT_ONELINE_FASTA, 3, 'shifte_fasta') -> "Starting position in FASTA is shifted!"
 ```
 
 ### GBK extract
 ```python
-select_genes_from_gbk_to_fasta(INPUT_GBK, 'genes_of_interest', genes_of_interest=['mngA', 'araE', 'trpA'], n_before=4, n_after=5) -> "File is written!":
+select_genes_from_gbk_to_fasta(INPUT_GBK, 'genes_of_interest', genes_of_interest=['mngA', 'araE', 'trpA'], n_before=4, n_after=5) -> "Genes of interest with their sequences are extracted from GBK to FASTA!":
 ```
 
 ## Troubleshooting

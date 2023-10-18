@@ -1,7 +1,8 @@
 # **SequenceMaster** <a href=""><img src="img/Logo.png" align="right" width="150" >
 
 **README должен быть кратким, как команда, как выстрел, иначе времени на отдых не останется!**
-P.S. You may run _test.py_ in terminal/command line to check the code!
+
+P.S. You may run _test.py_ in terminal/command line to check the code! Hope you enjoy it!
 
 _A powerful and minimalistic bioinfomatical tool to work with sequences of nucleic acids and proteins. Moreover, you may manipulate with your data in FASTQ, FASTA and GBK formats_
 

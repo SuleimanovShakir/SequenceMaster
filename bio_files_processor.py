@@ -139,6 +139,7 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
                     while not lines[j].endswith('"'):
                         seq += lines[j]
                         j += 1
+                    seq += lines[j]
             cds_gene_translation.append(seq)
             individual_cds.append(cds_gene_translation)
     # Create output list. It will consist only from gene:translation pair

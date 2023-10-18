@@ -35,7 +35,7 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = Non
             else:
                 element = element.strip('\n')
                 output_file.write(element+'')
-        print('File is written!')
+        print('Multiline FASTA is converted to oneline!')
 
 
 # Function to change starting position in fasta sequence
@@ -72,7 +72,7 @@ def change_fasta_start_pos(input_fasta: str, shift: int, output_fasta: str = Non
                 element = element.strip('\n')
                 shifted_element = element[shift:]+element[:shift]
                 output_file.write(shifted_element+'\n')
-        print('File is written!')
+        print('Starting position in FASTA is shifted!')
 
 
 # Function to read GBK file to FASTA
@@ -168,4 +168,4 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
                 output_file.write(element.strip('/translation=').replace('"', '')+'\n')
             if element.startswith('CDS'):
                 output_file.write(element+'\n')
-    print('Your file is written')
+    print('Genes of interest with their sequences are extracted from GBK to FASTA!')

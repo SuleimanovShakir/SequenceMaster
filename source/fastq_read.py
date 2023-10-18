@@ -101,4 +101,4 @@ def dict_to_fastq(input_dict: dict, output_path: str = None) -> None:
     with open(output_path, 'w') as output_file:
         for line in final_list:
             output_file.write(line+'\n')
-        print('File is written!')
+        print('Filtered FASTA is written')

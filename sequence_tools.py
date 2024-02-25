@@ -78,15 +78,11 @@ class WrongSequence(ValueError):
 class BiologicalSequence(str):
     def __init__(self, sequence):
         self.sequence = sequence
-        #self.start_index = None
-        #self.end_index = None
 
     def __len__(self):
         return len(self.sequence)
     
     def slice(self, start_index, stop_index):
-        #self.start_index = start_index
-        #self.start_index = start_index
         return self.sequence[start_index:stop_index]
     
     def alphabet_checking(self):

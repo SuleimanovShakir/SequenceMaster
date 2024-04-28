@@ -112,7 +112,7 @@ class BiologicalSequence(str):
         '''
         Function to take slices in sequences
         '''
-        return self.sequence[start_index:stop_index]
+        return type(self)(self.sequence[start_index:stop_index])
 
     def alphabet_checking(self):
         '''
@@ -282,7 +282,6 @@ class AminoAcidSequence(BiologicalSequence):
         return mass
 
 
-#Add TOKEN
 load_dotenv()
 TOKEN = os.getenv('TG_API_TOKEN')
 

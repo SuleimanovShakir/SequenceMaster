@@ -3,8 +3,7 @@ from sklearn.base import BaseEstimator
 from sklearn.tree import DecisionTreeClassifier
 
 class RandomForestClassifierCustom(BaseEstimator):
-    def __init__(
-        self, n_estimators=10, max_depth=None, max_features=None, random_state=None):
+    def __init__(self, n_estimators=10, max_depth=None, max_features=None, random_state=None):
         self.n_estimators = n_estimators
         self.max_depth = max_depth
         self.max_features = max_features
@@ -16,9 +15,9 @@ class RandomForestClassifierCustom(BaseEstimator):
 
     def fit(self, X, y):
         self.classes_ = sorted(np.unique(y))
-        
+
         for i in range(0, self.n_estimators):
-            np.random.seed(SEED + i)
+            np.random.seed(self.random_state + i)
             feature_idx = np.array(np.random.choice(X.shape[1], self.max_features, replace = False))
             self.feat_ids_by_tree.append(feature_idx)
             bootstrapped_idx = np.array(np.random.choice(X.shape[0], X.shape[0], replace=True))
@@ -31,6 +30,9 @@ class RandomForestClassifierCustom(BaseEstimator):
         return self
 
     def predict_proba(self, X):
+        '''
+        Function to predict probabilities of the class using the random forest.
+        '''
         total_pred = []
         for i in range(len(self.trees)):
             y_pred = self.trees[i].predict_proba(np.array([X[:, k] for k in self.feat_ids_by_tree[i]]).T)
@@ -38,7 +40,9 @@ class RandomForestClassifierCustom(BaseEstimator):
         return np.mean(total_pred, axis = 0)
 
     def predict(self, X):
+        '''
+        Function to predict classes using random forest.
+        '''
         probas = self.predict_proba(X)
         predictions = np.argmax(probas, axis=1)
-        
         return predictions

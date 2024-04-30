@@ -41,13 +41,13 @@ def fastq_filter(input_path: str = None, output_filename: str = None, *,
     # Chech if folder exist and create outout_path if not given
     input_folder = input_path.rsplit('/', 1)[0]
     input_name = input_path.rsplit('/', 1)[1]
-    is_exist = os.path.exists(f'{input_folder}/fastq_filtrator_resuls/')
+    is_exist = os.path.exists(f'{input_folder}/fastq_filtrator_results/')
     if not is_exist:
-        os.makedirs(f'{input_folder}/fastq_filtrator_resuls/')
+        os.makedirs(f'{input_folder}/fastq_filtrator_results/')
     if output_filename is None:
-        output_path = f'{input_folder}/fastq_filtrator_resuls/{input_name}'
+        output_path = f'{input_folder}/fastq_filtrator_results/{input_name}'
     else:
-        output_path = f'{input_folder}/fastq_filtrator_resuls/{output_filename}.fastq'
+        output_path = f'{input_folder}/fastq_filtrator_results/{output_filename}.fastq'
     # Create dict from FASTQ
     seqs = list(SeqIO.parse(input_path, "fastq"))
     # Check that this dict is not empty
@@ -77,6 +77,7 @@ def fastq_filter(input_path: str = None, output_filename: str = None, *,
 
     # Write  filtered data into new .fastq file
     SeqIO.write(filtered_fastq, output_path, 'fastq')
+    print('Fastq filtering has been finished!')
 
 
 class WrongSequence(ValueError):

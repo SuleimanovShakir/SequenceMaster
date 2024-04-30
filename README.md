@@ -6,7 +6,18 @@ _A powerful and minimalistic bioinfomatical tool to work with sequences of nucle
 <img src="img/SequenceMaster.png" align='center', width="100%">
 </div>
 
-This repo represents my implementation of different tools for bioinformatics made during my education at the Bioinformatics Institute
+<hr style="border:2px solid gray">
+
+This repo represents my implementation of different tools for bioinformatics made during my education at the Bioinformatics Institute. Main educational topics covered: 
+
+<div style='justify-content: center'>
+<img src="img/BI.png" align='center', width="100%">
+</div>
+
+- Basic Python Decorators OOP Iterators Generators RegEx Visualization Pandas Numpy
+- Web scraping Developer tools Parallel programming
+
+
 
 ## Key Features
 

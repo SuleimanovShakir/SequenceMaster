@@ -1,6 +1,6 @@
 import pytest
 
-from sequence_tools import RNAsequence, AminoAcidSequence, DNAsequence, GenscanOutput, run_genscan
+from sequence_tools import RNAsequence, AminoAcidSequence, DNAsequence, GenscanOutput, run_genscan, fastq_filter
 
 
 def test_rna_sequence_gc_content():
@@ -72,4 +72,15 @@ def test_run_genscan_output_status():
     '''
     target = 200
     result = run_genscan('example_data/transferrin.fasta').status
+    assert target == result
+
+
+def test_fastq_filter_writing_file():
+    '''
+    Function to test the fastq_filter function's writing file.
+    '''
+    fastq_filter('example_data/example_fastq.fastq', 'filtered_fastq', gc_bound=(40,60), length_bound=(88, 200), quality_threshold=15)
+    with open('example_data/fastq_filtrator_results/filtered_fastq.fastq', 'r') as file:
+        result = file.read()
+    target = '@SRX079804:1:SRR292678:1:1101:24563:24563 1:N:0:1 BH:failed\nATTAGCGAGGAGGAGTGCTGAGAAGATGTCGCCTACGCCGTTGAAATTCCCTTCAATCAGGGGGTACTGGAGGATACGAGTTTGTGTG\n+\nBFFFFFFFB@B@A<@D>BDDACDDDEBEDEFFFBFFFEFFDFFF=CC@DDFD8FFFFFFF8/+.2,@7<<:?B/:<><-><@.A*C>D\n'
     assert target == result

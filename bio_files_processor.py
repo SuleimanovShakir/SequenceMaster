@@ -1,5 +1,35 @@
 # Import modules
-from source.folder_parser import folder_parser
+from dataclasses import dataclass
+import os
+
+
+def folder_parser(input: str = None, output: str = None,
+                  folder_name: str = None, format: str = None) -> str:
+    """
+    This function takes as input a folder path, processes folder name
+    and creates output_path.
+
+    Arguments (positional):
+    - input (str): The path to the input folder containing the files
+      to be processed. If not provided, the current working directory is used.
+    - output (str): Name of the output file.
+    - folder_name (str): A custom name for the folder to be created
+      for the output files.
+    - format (str): The format for the saved file. 
+
+    Output:
+    - str: output path
+    """
+    input_folder = input.rsplit('/', 1)[0]
+    input_name = input.rsplit('/', 1)[1]
+    is_exist = os.path.exists(f'{input_folder}/{folder_name}/')
+    if not is_exist:
+        os.makedirs(f'{input_folder}/{folder_name}/')
+    if output is None:
+        output_path = f'{input_folder}/{folder_name}/{input_name}'
+    else:
+        output_path = f'{input_folder}/{folder_name}/{output}.{format}'
+    return output_path
 
 
 # Function to convert multiline fatsa to oneline
@@ -170,3 +200,74 @@ def select_genes_from_gbk_to_fasta(input_gbk: str, output_fasta: str = None,
             if element.startswith('CDS'):
                 output_file.write(element+'\n')
     print('Genes of interest with their sequences are extracted from GBK to FASTA!')
+
+
+@dataclass
+class FastaRecord:
+    '''
+    A data class representing a single FASTA record.
+    '''
+    id: str
+    seq: str
+    description: str
+
+    def __repr__(self):
+        return f'FastaRecord with id: {self.id[1:]}'
+
+
+class OpenFasta:
+    '''
+    This class provides methods to read FASTA files.
+    '''
+    def __init__(self, filename, mode='r'):
+        self.filename = filename
+        self.handler = None
+        self.mode = mode
+        self.header = None
+        self.stopiter = False
+
+    def __enter__(self):
+        self.handler = open(self.filename, self.mode)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.handler.close()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.stopiter:
+            raise StopIteration('There are no more fasta records in this file')
+        if self.header is None:
+            header = self.handler.readline()
+        else:
+            header = self.header
+        sequence = []
+        is_seq = True
+        while is_seq:
+            line = self.handler.readline()
+            if line.startswith('>'):
+                is_seq = False
+                self.header = line
+            elif line == '':
+                self.stopiter = True
+                return FastaRecord((header.split(' ', 1)[0]), ''.join(seq[:-1] for seq in sequence), (header.split(' ', 1)[1]))
+            else:
+                sequence.append(line)
+        return FastaRecord((header.split(' ', 1)[0]), ''.join(seq[:-1] for seq in sequence), (header.split(' ', 1)[1]))
+
+    def read_record(self):
+        '''
+        Function to read a single fasta record from a file
+        '''
+        return self.__next__()
+
+    def read_records(self):
+        '''
+        Function to read all fasta records from a file
+        '''
+        records = []
+        while not self.StopIter:
+            records.append(self.__next__())
+        return records
